@@ -17,28 +17,24 @@ data = np.array([
 ohlc = data.reshape(1, *data.shape) # (1, 5, 4) -> (N, ts_n, 4) -> num of instances, length of time series, num of features 
 print(ohlc[0])
 
-# Convert the OHLC data to CULR data
-culr = ohlc2culr(ohlc)
-print(culr[0])
+# Convert the OHLC data to GAF
+open = ohlc[0, :, 0].reshape(1, -1, 1)
+high = ohlc[0, :, 1].reshape(1, -1, 1)
+low = ohlc[0, :, 2].reshape(1, -1, 1)
+close = ohlc[0, :, 3].reshape(1, -1, 1)
 
-# Convert the CULR data to GAF
-close = culr[0, :, 0].reshape(1, -1, 1)
-upper = culr[0, :, 1].reshape(1, -1, 1)
-lower = culr[0, :, 2].reshape(1, -1, 1)
-realbody = culr[0, :, 3].reshape(1, -1, 1)
-
-CULR = {
-    'close': close,
-    'upper': upper,
-    'lower': lower,
-    'realbody': realbody
+OHLC = {
+    'open': open,
+    'high': high,
+    'low': low,
+    'close': close
 }
 
 fig, axs = plt.subplots(2, 2, figsize=(12, 12))
-fig.suptitle('CULR GAF')
+fig.suptitle('OHLC GAF')
 
 # 4 in one
-for i, (name, data) in enumerate(CULR.items()):
+for i, (name, data) in enumerate(OHLC.items()):
     gasf = get_gasf(data.reshape(1, -1, 1))
     gasf_mean = gasf[0].mean(axis=-1)
 
@@ -50,12 +46,12 @@ for i, (name, data) in enumerate(CULR.items()):
 
 # Add a colorbar to the figure
 fig.colorbar(im, ax=axs.ravel().tolist(), fraction=0.0457, pad=0.04)
-fig.savefig('./results/culr/culr_gaf.png')
+fig.savefig('./results/ohlc/ohlc_gaf.png')
 plt.show()
 
 
 # Seperate
-for i, (name, data) in enumerate(CULR.items()):
+for i, (name, data) in enumerate(OHLC.items()):
     gasf = get_gasf(data.reshape(1, -1, 1))
     gasf_mean = gasf[0].mean(axis=-1)
 
@@ -70,7 +66,7 @@ for i, (name, data) in enumerate(CULR.items()):
     # fig.colorbar(im, fraction=0.0457, pad=0.04)
 
     # Save the current figure (including the subplot) in a separate file
-    plt.savefig(f'results/culr/gaf_{name}.png', dpi=500)
+    plt.savefig(f'results/ohlc/gaf_{name}.png', dpi=500)
 
     # Close the figure to free up memory
     plt.close(fig)

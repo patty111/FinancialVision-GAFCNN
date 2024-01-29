@@ -4,13 +4,16 @@ from utils.util_process import *
 
 np.set_printoptions(suppress=True)
 
-# ETH OHLC from 2023 12 11 ~ 2023 12 15
+# ETH OHLC from 2023 12 11 ~ 2023 12 18
 data = np.array([
-    [2315.2, 2317.35, 2235.7, 2240.6],
-    [2261.96, 2331.61, 2237.04, 2315.31],
-    [2204.09, 2283.90, 2148.74, 2260.15],
-    [2224.46, 2243.31, 2168.17, 2203.47],
-    [2351.73, 2354.99, 2164.26, 2225.31]
+    [2352.31, 2354.9, 2133.47, 2224.1],
+    [2224.1, 2242.96, 2165.58, 2202.33],
+    [2202.33, 2284.2, 2145.57, 2260.72],
+    [2260.72, 2332.24, 2231.57, 2316.03],
+    [2316.03, 2318.06, 2201.14, 2220.32],
+    [2220.32, 2261.92, 2210.47, 2227.14],
+    [2227.14, 2245.8, 2190.85, 2194.84],
+    # [2194.84, 2222.91, 2115.85, 2203.75],
 ])
 
 # Reshape the data to match the expected input shape for ohlc2culr
@@ -60,13 +63,15 @@ for i, (name, data) in enumerate(OHLC.items()):
 
     # Display the GASF image in the subplot
     im = ax.imshow(gasf_mean, cmap='grey', origin='lower')
-    ax.set_title(f'GAF {name}')
+    # ax.set_title(f'GAF {name}')
 
     # Add a colorbar to the figure
     # fig.colorbar(im, fraction=0.0457, pad=0.04)
 
+    ax.axis('off')
+    
     # Save the current figure (including the subplot) in a separate file
-    plt.savefig(f'results/ohlc/gaf_{name}.png', dpi=500)
+    plt.savefig(f'results/ohlc/gaf_{name}.png', bbox_inches='tight')
 
     # Close the figure to free up memory
     plt.close(fig)
